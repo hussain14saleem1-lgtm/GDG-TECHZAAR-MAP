@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechZaar — GDG OC LIMU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ═══════════════════════════ TOKENS ═══════════════════════════ */
+        :root {
+            --blue: #4285F4;
+            --red: #EA4335;
+            --yellow: #FBBC04;
+            --green: #34A853;
+
+            --bg: #ffffff;
+            --bg2: #F8F9FA;
+            --surf: #ffffffd8;
+            --elev: #F1F3F4;
+            --t1: #202124;
+            --t2: #5F6368;
+            --t3: #9AA0A6;
+            --bdr: #E8EAED;
+            --nav: rgba(255, 255, 255, .88);
+            --s1: 0 1px 4px rgba(60, 64, 67, .13), 0 1px 2px rgba(60, 64, 67, .08);
+            --s2: 0 2px 10px rgba(60, 64, 67, .15);
+            --s3: 0 8px 30px rgba(60, 64, 67, .20), 0 2px 8px rgba(60, 64, 67, .12);
+        }
+
+        [data-theme="dark"] {
+            --bg: #080808;
+            --bg2: #101010;
+            --surf: rgba(22, 22, 22, .85);
+            --elev: #222222;
+            --t1: #E8EAED;
+            --t2: #9AA0A6;
+            --t3: #5F6368;
+            --bdr: #2A2A2A;
+            --nav: rgba(8, 8, 8, .88);
+            --s1: 0 1px 4px rgba(0, 0, 0, .55);
+            --s2: 0 2px 10px rgba(0, 0, 0, .6);
+            --s3: 0 8px 30px rgba(0, 0, 0, .75);
+        }
+
+        /* ═══════════════════════════ BASE ═══════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--t1);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            transition: background .35s, color .35s;
+            /* The blob canvas sits behind everything */
+            position: relative;
+        }
+
+        /* ═══════════════════════════ FULL-PAGE BLOB LAYER ═══════════════════════════ */
+        /* Fixed so blobs stay put as user scrolls — covers entire page */
+        #blob-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Gradient mesh — subtle colour washes across the whole viewport */
+        #blob-canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 55% at 88% 12%, rgba(66, 133, 244, .11) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 50% at 10% 88%, rgba(52, 168, 83, .09) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 45% at 78% 82%, rgba(234, 67, 53, .08) 0%, transparent 60%),
+                radial-gradient(ellipse 35% 35% at 6% 18%, rgba(251, 188, 4, .08) 0%, transparent 58%),
+                radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .04) 0%, transparent 70%);
+        }
+
+        [data-theme="dark"] #blob-canvas::before {
+            background:
+                radial-gradient(ellipse 60% 55% at 88% 12%, rgba(66, 133, 244, .17) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 50% at 10% 88%, rgba(52, 168, 83, .13) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 45% at 78% 82%, rgba(234, 67, 53, .11) 0%, transparent 60%),
+                radial-gradient(ellipse 35% 35% at 6% 18%, rgba(251, 188, 4, .11) 0%, transparent 58%),
+                radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .06) 0%, transparent 70%);
+        }
+
+        /* Individual floating blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: .22;
+            filter: blur(2px);
+            animation: bfloat ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .blob {
+            opacity: .20;
+        }
+
+        @keyframes bfloat {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            33% {
+                transform: translateY(-22px) scale(1.04);
+            }
+
+            66% {
+                transform: translateY(14px) scale(.97);
+            }
+        }
+
+        /* Everything above the blob layer */
+        .nav,
+        main,
+        footer,
+        .hero-inner,
+        .stats-wrap,
+        .sec {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════ NAVBAR ═══════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            height: 60px;
+            padding: 0 24px;
+            background: var(--nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--bdr);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background .3s, border-color .3s;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .gdg-svg {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            display: none;
+        }
+
+        .gdg-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--t1);
+            letter-spacing: -.5px;
+        }
+
+        .brand-name em {
+            font-style: normal;
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--t2);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            transition: all .18s;
+        }
+
+        .nav-links a:hover {
+            background: var(--elev);
+            color: var(--t1);
+        }
+
+        .nav-links a.active {
+            background: #E8F0FE;
+            color: var(--blue);
+        }
+
+        [data-theme="dark"] .nav-links a.active {
+            background: rgba(66, 133, 244, .18);
+        }
+
+        .nav-r {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tbtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--bdr);
+            background: var(--surf);
+            color: var(--t2);
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .18s;
+            backdrop-filter: blur(8px);
+        }
+
+        .tbtn:hover {
+            background: var(--elev);
+        }
+
+        .hbg {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        .hbg span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--t1);
+            border-radius: 2px;
+            transition: all .3s;
+        }
+
+        @media (max-width: 620px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                z-index: 998;
+                background: var(--nav);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--bdr);
+                flex-direction: column;
+                padding: 12px 16px;
+                gap: 4px;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hbg {
+                display: flex;
+            }
+        }
+
+        /* ═══════════════════════════ HERO ═══════════════════════════ */
+        .hero {
+            padding-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 72px 24px 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(66, 133, 244, .12);
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .10em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(66, 133, 244, .2);
+            animation: fu .55s ease both;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--blue);
+        }
+
+        .htitle {
+            font-size: clamp(64px, 11vw, 110px);
+            font-weight: 800;
+            line-height: .92;
+            letter-spacing: -3px;
+            animation: fu .55s .08s ease both;
+        }
+
+        .htitle .cb {
+            color: var(--blue);
+        }
+
+        .htitle .cr {
+            color: var(--red);
+        }
+
+        .htitle .cy {
+            color: var(--yellow);
+        }
+
+        .htitle .cg {
+            color: var(--green);
+        }
+
+        .hsub {
+            font-size: 17px;
+            line-height: 1.7;
+            color: var(--t2);
+            max-width: 520px;
+            animation: fu .55s .15s ease both;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            animation: fu .55s .22s ease both;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surf);
+            border: 1.5px solid var(--bdr);
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--t2);
+            box-shadow: var(--s1);
+            backdrop-filter: blur(8px);
+        }
+
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blue);
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 30px;
+            border-radius: 50px;
+            box-shadow: 0 2px 12px rgba(66, 133, 244, .40);
+            transition: all .2s;
+            width: fit-content;
+            animation: fu .55s .30s ease both;
+        }
+
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(66, 133, 244, .50);
+            background: #3367D6;
+        }
+
+        /* scroll indicator */
+        .scroll-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--t3);
+            font-weight: 500;
+            animation: fu .6s .45s ease both;
+            margin-top: 8px;
+        }
+
+        .scroll-arrow {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid var(--bdr);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(5px);
+            }
+        }
+
+        /* ═══════════════════════════ STATS ═══════════════════════════ */
+        .stats-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border: 1.5px solid var(--bdr);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--s1);
+            background: var(--surf);
+            backdrop-filter: blur(12px);
+        }
+
+        .st {
+            padding: 24px 20px;
+            text-align: center;
+            border-right: 1px solid var(--bdr);
+            transition: background .2s;
+        }
+
+        .st:last-child {
+            border-right: none;
+        }
+
+        .st:hover {
+            background: rgba(66, 133, 244, .04);
+        }
+
+        .st-n {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .st-l {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: .09em;
+        }
+
+        @media (max-width: 560px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .st {
+                border-bottom: 1px solid var(--bdr);
+            }
+
+            .st:nth-child(2) {
+                border-right: none;
+            }
+
+            .st:nth-child(3),
+            .st:nth-child(4) {
+                border-bottom: none;
+            }
+
+            .st:nth-child(4) {
+                border-right: none;
+            }
+        }
+
+        /* ═══════════════════════════ SECTION ═══════════════════════════ */
+        .sec {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 70px 24px 24px;
+        }
+
+        .sec-lbl {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-bottom: 10px;
+        }
+
+        .sec-lbl::before {
+            content: '';
+            width: 18px;
+            height: 2px;
+            background: var(--blue);
+            border-radius: 1px;
+        }
+
+        .sec-title {
+            font-size: clamp(26px, 4vw, 38px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 28px;
+            color: var(--t1);
+        }
+
+        /* ═══════════════════════════ ACTIVITY GRID ═══════════════════════════ */
+        /*
+      Layout plan (3 columns):
+      Row 1: Photobooth (wide=2) | "I Will Build" Wall
+      Row 2: QR Hunt | Tech Frame | Debug The Wall
+      Row 3: Gaming Simulator | GDG Arcade | Multiplayer Game
+      Row 4: GDE Expert Talk (wide=2) | Art Installations
+      Row 5: VR Experience | [gap — VR spans tall or Problem Solving fills]
+      Actually: 12 cards, 3-col grid:
+        Photobooth (w2) + Build Wall
+        QR Hunt + Tech Frame + Debug Wall
+        Gaming + GDG Arcade + Multiplayer  ← key ask
+        GDE Talk (w2) + Art
+        Problem Solving + VR
+    */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px;
+        }
+
+        /* Card base */
+        .card {
+            background: var(--surf);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid var(--bdr);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--s1);
+            display: flex;
+            flex-direction: column;
+            transition: transform .22s, box-shadow .22s, border-color .22s;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fu .45s ease forwards;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--s3);
+            border-color: color-mix(in srgb, var(--ca) 40%, transparent);
+        }
+
+        .card-bar {
+            height: 3px;
+            background: var(--ca);
+            flex-shrink: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-ico {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: color-mix(in srgb, var(--ca) 12%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .card-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--t1);
+            letter-spacing: -.3px;
+            line-height: 1.25;
+        }
+
+        .card-desc {
+            font-size: 12.5px;
+            line-height: 1.65;
+            color: var(--t2);
+            flex: 1;
+        }
+
+        .card-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--ca);
+            background: color-mix(in srgb, var(--ca) 10%, transparent);
+            padding: 4px 9px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-top: auto;
+        }
+
+        /* Wide card spans 2 cols — kept for future use */
+        .card.w2 {
+            grid-column: span 2;
+        }
+
+        .card.w2 .card-body {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .card.w2 .card-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* GDE card — always full width across all columns */
+        .card.gde {
+            grid-column: 1 / -1;
+        }
+
+        .card.gde .card-body {
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card.gde .card-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Photobooth — wide (span 2) on desktop 3-col only */
+        .card.photo-wide {
+            grid-column: span 2;
+        }
+
+        .card.photo-wide .card-body {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .card.photo-wide .card-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Animation stagger */
+        .card:nth-child(1) {
+            animation-delay: .04s
+        }
+
+        .card:nth-child(2) {
+            animation-delay: .08s
+        }
+
+        .card:nth-child(3) {
+            animation-delay: .12s
+        }
+
+        .card:nth-child(4) {
+            animation-delay: .16s
+        }
+
+        .card:nth-child(5) {
+            animation-delay: .20s
+        }
+
+        .card:nth-child(6) {
+            animation-delay: .24s
+        }
+
+        .card:nth-child(7) {
+            animation-delay: .28s
+        }
+
+        .card:nth-child(8) {
+            animation-delay: .32s
+        }
+
+        .card:nth-child(9) {
+            animation-delay: .36s
+        }
+
+        .card:nth-child(10) {
+            animation-delay: .40s
+        }
+
+        .card:nth-child(11) {
+            animation-delay: .44s
+        }
+
+        .card:nth-child(12) {
+            animation-delay: .48s
+        }
+
+        @media (max-width: 860px) {
+            .card.gde .card-body {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            /* On 2-col: photo-wide spans full width so it stays rectangular */
+            .card.photo-wide {
+                grid-column: span 2;
+            }
+
+            .card.photo-wide .card-body {
+                flex-direction: column;
+            }
+
+            .card.w2 {
+                grid-column: span 2;
+            }
+
+            .card.w2 .card-body {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .card.photo-wide,
+            .card.w2,
+            .card.gde {
+                grid-column: span 1;
+            }
+        }
+
+        /* ═══════════════════════════ LOCATION ═══════════════════════════ */
+        .location-sec {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 64px 24px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+            background: var(--surf);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid var(--bdr);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--s2);
+        }
+
+        .location-info {
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loc-title {
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 800;
+            letter-spacing: -.5px;
+            color: var(--t1);
+            line-height: 1.1;
+        }
+
+        .loc-sub {
+            font-size: 14px;
+            color: var(--t3);
+            font-weight: 500;
+            margin-top: -12px;
+        }
+
+        .loc-details {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .loc-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .loc-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loc-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--t3);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 2px;
+        }
+
+        .loc-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--t1);
+        }
+
+        .loc-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blue);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 11px 22px;
+            border-radius: 50px;
+            width: fit-content;
+            box-shadow: 0 2px 10px rgba(66, 133, 244, .35);
+            transition: all .2s;
+            margin-top: 4px;
+        }
+
+        .loc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 133, 244, .45);
+            background: #3367D6;
+        }
+
+        .loc-map {
+            min-height: 320px;
+            background: var(--elev);
+            position: relative;
+        }
+
+        .loc-map iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        @media (max-width: 700px) {
+            .location-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .loc-map {
+                min-height: 240px;
+                border-radius: 0 0 22px 22px;
+            }
+
+            .location-info {
+                padding: 28px 24px;
+            }
+        }
+
+        /* ═══════════════════════════ FOOTER ═══════════════════════════ */
+        footer {
+            margin-top: 80px;
+            background: var(--surf);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--bdr);
+            padding: 48px 24px 32px;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Brand row */
+        .footer-brand {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .footer-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--t1);
+            letter-spacing: -.3px;
+            margin-bottom: 4px;
+        }
+
+        .footer-sub {
+            font-size: 12px;
+            color: var(--t3);
+            line-height: 1.6;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: var(--bdr);
+            margin-bottom: 24px;
+        }
+
+        .footer-social-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-bottom: 14px;
+        }
+
+        /* Social cards grid */
+        .footer-socials {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .soc-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg2);
+            border: 1.5px solid var(--bdr);
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: var(--t1);
+            transition: all .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .soc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2.5px;
+            background: var(--sc);
+        }
+
+        .soc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--s2);
+            border-color: color-mix(in srgb, var(--sc) 40%, transparent);
+            background: var(--surf);
+        }
+
+        .soc-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            background: color-mix(in srgb, var(--sc) 12%, transparent);
+            color: var(--sc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .soc-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .soc-platform {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--t1);
+            letter-spacing: -.1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .soc-handle {
+            font-size: 11px;
+            color: var(--sc);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .soc-arrow {
+            font-size: 14px;
+            color: var(--t3);
+            transition: transform .2s;
+            flex-shrink: 0;
+        }
+
+        .soc-card:hover .soc-arrow {
+            transform: translateX(3px);
+            color: var(--sc);
+        }
+
+        /* Bottom bar */
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bdr);
+        }
+
+        .fdots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fd {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: var(--t3);
+        }
+
+        @media (max-width: 700px) {
+            .footer-socials {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .footer-socials {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ═══════════════════════════ KEYFRAMES ═══════════════════════════ */
+        @keyframes fu {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════ FULL-PAGE BLOB LAYER ══════ -->
+    <div id="blob-canvas">
+        <!-- Blue blobs -->
+        <div class="blob" style="width:320px;height:320px;background:#4285F4;top:4%;left:72%;animation-duration:10s;">
+        </div>
+        <div class="blob"
+            style="width:160px;height:160px;background:#4285F4;top:55%;left:12%;animation-duration:13s;animation-delay:-6s;">
+        </div>
+        <div class="blob"
+            style="width:100px;height:100px;background:#4285F4;top:82%;left:58%;animation-duration:17s;animation-delay:-4s;">
+        </div>
+        <!-- Red blobs -->
+        <div class="blob"
+            style="width:220px;height:220px;background:#EA4335;top:72%;left:2%;animation-duration:12s;animation-delay:-3s;">
+        </div>
+        <div class="blob"
+            style="width:120px;height:120px;background:#EA4335;top:18%;left:30%;animation-duration:15s;animation-delay:-8s;">
+        </div>
+        <div class="blob"
+            style="width:80px;height:80px;background:#EA4335;top:45%;left:85%;animation-duration:18s;animation-delay:-10s;">
+        </div>
+        <!-- Yellow blobs -->
+        <div class="blob"
+            style="width:180px;height:180px;background:#FBBC04;top:30%;left:88%;animation-duration:11s;animation-delay:-5s;">
+        </div>
+        <div class="blob"
+            style="width:110px;height:110px;background:#FBBC04;top:88%;left:25%;animation-duration:14s;animation-delay:-2s;">
+        </div>
+        <div class="blob"
+            style="width:70px;height:70px;background:#FBBC04;top:10%;left:50%;animation-duration:19s;animation-delay:-11s;">
+        </div>
+        <!-- Green blobs -->
+        <div class="blob"
+            style="width:250px;height:250px;background:#34A853;top:60%;left:68%;animation-duration:9s;animation-delay:-7s;">
+        </div>
+        <div class="blob"
+            style="width:140px;height:140px;background:#34A853;top:5%;left:8%;animation-duration:16s;animation-delay:-1s;">
+        </div>
+        <div class="blob"
+            style="width:90px;height:90px;background:#34A853;top:40%;left:42%;animation-duration:20s;animation-delay:-13s;">
+        </div>
+    </div>
+
+    <!-- ══════ NAVBAR ══════ -->
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">
+            <span class="brand-name">Tech<em>Zaar</em></span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="active">Activities</a></li>
+            <li><a href="map.html">Venue Map</a></li>
+        </ul>
+
+        <div class="nav-r">
+            <button class="tbtn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+            <button class="hbg" id="hbg" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ══════ HERO ══════ -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="eyebrow">
+                <div class="eyebrow-dot"></div> GDG OC LIMU presents
+            </div>
+
+            <h1 class="htitle">
+                <span class="cb">T</span><span class="cr">e</span><span class="cy">c</span><span class="cg">h</span>Zaar
+            </h1>
+
+            <p class="hsub">
+                A one-of-a-kind tech bazaar for the Benghazi community — blending innovation, networking, entertainment,
+                and career opportunities in one electrifying night.
+            </p>
+
+            <div class="chips">
+                <div class="chip">📅 March 12 · 10 PM – 1 AM</div>
+                <div class="chip">📍 Tanmia 360 Space, Benghazi</div>
+                <div class="chip">🎉 Free Entry</div>
+            </div>
+
+            <a href="#activities" class="cta">
+                Explore Activities
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </a>
+
+            <div class="scroll-hint">
+                <div class="scroll-arrow">↓</div>
+                Scroll to explore
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════ STATS ══════ -->
+    <div class="stats-wrap">
+        <div class="stats">
+            <div class="st">
+                <div class="st-n" style="color:var(--blue);" data-count="12">0</div>
+                <div class="st-l">Activities</div>
+            </div>
+            <div class="st">
+                <div class="st-n" style="color:var(--red);">1</div>
+                <div class="st-l">Epic Night</div>
+            </div>
+            <div class="st">
+                <div class="st-n" style="color:var(--yellow);">3h</div>
+                <div class="st-l">Duration</div>
+            </div>
+            <div class="st">
+                <div class="st-n" style="color:var(--green);">∞</div>
+                <div class="st-l">Community</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ ACTIVITIES ══════ -->
+    <main class="sec" id="activities">
+        <div class="sec-lbl">What's happening</div>
+        <h2 class="sec-title">All Activities</h2>
+
+        <div class="grid">
+
+            <!--
+      DESKTOP 3-col layout:
+      [Photobooth wide=2]        [Build Wall]
+      [QR Hunt] [Tech Frame] [Debug Wall]
+      [Gaming]  [GDG Arcade] [Multiplayer]
+      [VR]      [Problem Solving] [Art Installations]
+      [GDE Expert Talk wide=2]   [empty→ no! GDE is last wide alone]
+
+      To avoid ANY empty slot on 2-col mobile, NO wide cards at all.
+      GDE Expert Talk gets its own full-width class handled differently.
+
+      MOBILE 2-col — all pairs:
+      [Photobooth] [Build Wall]
+      [QR Hunt] [Tech Frame]
+      [Debug Wall] [Gaming]
+      [GDG Arcade] [Multiplayer]
+      [VR] [Problem Solving]
+      [Art Installations] [GDE Expert Talk]  ← GDE no longer wide
+    -->
+
+            <!-- 1. Photobooth — wide on desktop, square on mobile -->
+            <div class="card photo-wide" style="--ca:var(--blue);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">📸</div>
+                    <div class="card-text">
+                        <div class="card-name">Photobooth Area</div>
+                        <p class="card-desc">A Google-themed photo zone with a Gemini prompt frame and Google Search bar
+                            frame — with TechZaar and GDG logos. Strike a pose, share it, and boost the community's
+                            reach online.</p>
+                        <span class="card-tag">📱 Social Media</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. I Will Build Wall -->
+            <div class="card" style="--ca:var(--green);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🧱</div>
+                    <div class="card-name">"I Will Build ___" Wall</div>
+                    <p class="card-desc">Complete the sentence on a giant sticky-note board. An AI startup? A better
+                        Libya? Your future? Be part of the community wall of dreams.</p>
+                    <span class="card-tag">✍️ Interactive</span>
+                </div>
+            </div>
+
+            <!-- 3. QR Hunt -->
+            <div class="card" style="--ca:var(--yellow);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🔍</div>
+                    <div class="card-name">QR Code Treasure Hunt</div>
+                    <p class="card-desc">QR codes are hidden across the venue. Collect them all to enter the raffle and
+                        win exciting prizes. Explore every corner!</p>
+                    <span class="card-tag">🎁 Raffle Prizes</span>
+                </div>
+            </div>
+
+            <!-- 4. Tech Frame -->
+            <div class="card" style="--ca:var(--red);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🎭</div>
+                    <div class="card-name">Tech Inspired Frame</div>
+                    <p class="card-desc">Step inside a giant frame styled like a Gemini prompt or Google Search bar. The
+                        most shareable photo moment of the night.</p>
+                    <span class="card-tag">📷 Photo Op</span>
+                </div>
+            </div>
+
+            <!-- 5. Debug Wall -->
+            <div class="card" style="--ca:var(--blue);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🐛</div>
+                    <div class="card-name">Debug The Wall</div>
+                    <p class="card-desc">A massive 1.5 × 1.5 m printout of code hides one intentional bug. Spot it! A
+                        gamified challenge for developers of all levels.</p>
+                    <span class="card-tag">💻 Dev Challenge</span>
+                </div>
+            </div>
+
+            <!-- 6. Gaming Simulator -->
+            <div class="card" style="--ca:var(--green);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🎮</div>
+                    <div class="card-name">Gaming Simulator</div>
+                    <p class="card-desc">A dedicated TV gaming zone with console for friendly competitions. Casual or
+                        competitive — everyone is welcome.</p>
+                    <span class="card-tag">🕹️ Entertainment</span>
+                </div>
+            </div>
+
+            <!-- 7. GDG Arcade -->
+            <div class="card" style="--ca:var(--yellow);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">👾</div>
+                    <div class="card-name">GDG Arcade</div>
+                    <p class="card-desc">Original mini-games built by the GDG OC team, running on a dedicated TV. Made
+                        by the community, for the community.</p>
+                    <span class="card-tag">🎲 GDG-Built</span>
+                </div>
+            </div>
+
+            <!-- 8. Multiplayer Game -->
+            <div class="card" style="--ca:var(--blue);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">📡</div>
+                    <div class="card-name">Multiplayer Game</div>
+                    <p class="card-desc">A real-time game you join from your own phone — no controller needed. Compete
+                        live on the big Gaffar TV screen with everyone in the venue.</p>
+                    <span class="card-tag">📲 Phone-Join</span>
+                </div>
+            </div>
+
+            <!-- 9. VR Experience -->
+            <div class="card" style="--ca:var(--yellow);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🥽</div>
+                    <div class="card-name">VR Experience</div>
+                    <p class="card-desc">Slip on a headset and step into another world. VR demos give everyone a
+                        hands-on taste of immersive technology — no experience needed.</p>
+                    <span class="card-tag">🌐 Immersive Tech</span>
+                </div>
+            </div>
+
+            <!-- 10. Problem Solving -->
+            <div class="card" style="--ca:var(--red);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🧠</div>
+                    <div class="card-name">Problem Solving Competition</div>
+                    <p class="card-desc">Sit at the PC and test your logic and coding skills live. Compete against the
+                        Benghazi tech community and prove your abilities.</p>
+                    <span class="card-tag">⚡ Competition</span>
+                </div>
+            </div>
+
+            <!-- 11. Art Installations -->
+            <div class="card" style="--ca:var(--green);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🖼️</div>
+                    <div class="card-name">Art Installations</div>
+                    <p class="card-desc">Immersive multi-screen showcases blending tech and creativity — celebrating the
+                        intersection of code, design, and human expression.</p>
+                    <span class="card-tag">🎨 Immersive</span>
+                </div>
+            </div>
+
+            <!-- 12. GDE Expert Talk — full width on ALL breakpoints -->
+            <div class="card gde" style="--ca:var(--red);">
+                <div class="card-bar"></div>
+                <div class="card-body">
+                    <div class="card-ico">🎙️</div>
+                    <div class="card-text">
+                        <div class="card-name">GDE Expert Talk</div>
+                        <p class="card-desc">A live virtual session with an internationally recognized Google Developer
+                            Expert. Gain insights on Google Cloud, Machine Learning, and AI directly from a world-class
+                            voice in tech — an unmissable opportunity for developers in Benghazi.</p>
+                        <span class="card-tag">🌍 Live Virtual Talk</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ══════ LOCATION ══════ -->
+    <section class="location-sec">
+        <div class="location-inner">
+            <div class="location-info">
+                <div class="sec-lbl" style="margin-bottom:10px;">Where to find us</div>
+                <h2 class="loc-title">Tanmia 360 Space</h2>
+                <p class="loc-sub">فضاء 360 · Benghazi, Libya</p>
+
+                <div class="loc-details">
+                    <div class="loc-row">
+                        <div class="loc-icon"
+                            style="background:color-mix(in srgb,var(--blue) 12%,transparent);color:var(--blue);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="loc-label">Venue</div>
+                            <div class="loc-value">Tanmia 360 Space, Benghazi, Libya</div>
+                        </div>
+                    </div>
+                    <div class="loc-row">
+                        <div class="loc-icon"
+                            style="background:color-mix(in srgb,var(--red) 12%,transparent);color:var(--red);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="loc-label">Date & Time</div>
+                            <div class="loc-value">March 12, 2025 · 10 PM – 1 AM</div>
+                        </div>
+                    </div>
+                    <div class="loc-row">
+                        <div class="loc-icon"
+                            style="background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="loc-label">Entry</div>
+                            <div class="loc-value">Free for everyone 🎉</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://maps.app.goo.gl/c1VZ6rFDDjXiLRZ86" target="_blank" class="loc-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    Open in Google Maps
+                </a>
+            </div>
+
+            <!-- Embedded Google Map -->
+            <div class="loc-map">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13376.5!2d20.08!3d32.09!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13a89cb4fefa2c23%3A0x96d89c4f8e8c7f71!2z2YHYttin2KogMzYw!5e0!3m2!1sar!2sly!4v1700000000000!5m2!1sar!2sly"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="Tanmia 360 Space location">
+                </iframe>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════ FOOTER ══════ -->
+    <footer>
+        <div class="footer-inner">
+
+            <!-- Brand -->
+            <div class="footer-brand">
+                <div>
+                    <div class="footer-name">GDG OC LIMU</div>
+                    <div class="footer-sub">Google Developer Groups on Campus<br>Libyan International Medical University
+                        · Benghazi, Libya</div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="footer-divider"></div>
+
+            <!-- Social links -->
+            <div class="footer-social-title">Follow us</div>
+            <div class="footer-socials">
+
+                <!-- GDG Facebook -->
+                <a href="#" class="soc-card" style="--sc:#4285F4;">
+                    <div class="soc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </div>
+                    <div class="soc-info">
+                        <div class="soc-platform">Facebook</div>
+                        <div class="soc-handle">GDG OC LIMU</div>
+                    </div>
+                    <div class="soc-arrow">→</div>
+                </a>
+
+                <!-- GDG Instagram -->
+                <a href="#" class="soc-card" style="--sc:#EA4335;">
+                    <div class="soc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </div>
+                    <div class="soc-info">
+                        <div class="soc-platform">Instagram</div>
+                        <div class="soc-handle">GDG OC LIMU</div>
+                    </div>
+                    <div class="soc-arrow">→</div>
+                </a>
+
+                <!-- TechZaar Instagram -->
+                <a href="#" class="soc-card" style="--sc:#34A853;">
+                    <div class="soc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </div>
+                    <div class="soc-info">
+                        <div class="soc-platform">Instagram</div>
+                        <div class="soc-handle">TechZaar</div>
+                    </div>
+                    <div class="soc-arrow">→</div>
+                </a>
+
+                <!-- GDG Page -->
+                <a href="https://gdg.community.dev/gdg-on-campus-libyan-international-medical-university-benghazi-libya/"
+                    target="_blank" class="soc-card" style="--sc:#FBBC04;">
+                    <div class="soc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="2" y1="12" x2="22" y2="12" />
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                    </div>
+                    <div class="soc-info">
+                        <div class="soc-platform">GDG Community</div>
+                        <div class="soc-handle">Official Page</div>
+                    </div>
+                    <div class="soc-arrow">→</div>
+                </a>
+
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="footer-bottom">
+                <div class="fdots">
+                    <div class="fd" style="background:var(--blue);"></div>
+                    <div class="fd" style="background:var(--red);"></div>
+                    <div class="fd" style="background:var(--yellow);"></div>
+                    <div class="fd" style="background:var(--green);"></div>
+                </div>
+                <p>March 12 · Tanmia 360 Space · 10 PM – 1 AM</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        /* Theme */
+        const T = document.getElementById('themeToggle');
+        const R = document.documentElement;
+        const sv = localStorage.getItem('tz-theme') || 'light';
+        R.setAttribute('data-theme', sv);
+        T.textContent = sv === 'dark' ? '☀️' : '🌙';
+        T.addEventListener('click', () => {
+            const n = R.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            R.setAttribute('data-theme', n);
+            localStorage.setItem('tz-theme', n);
+            T.textContent = n === 'dark' ? '☀️' : '🌙';
+        });
+
+        /* Hamburger */
+        document.getElementById('hbg').addEventListener('click', () =>
+            document.getElementById('navLinks').classList.toggle('open')
+        );
+
+        /* Scroll reveal */
+        const obs = new IntersectionObserver(es => {
+            es.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.style.animationPlayState = 'running';
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.06, rootMargin: '0px 0px -16px 0px' });
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.animationPlayState = 'paused'; obs.observe(c);
+        });
+
+        /* Counter */
+        const cobs = new IntersectionObserver(es => {
+            es.forEach(e => {
+                if (e.isIntersecting) {
+                    const el = e.target.querySelector('[data-count]');
+                    if (el) {
+                        const to = parseInt(el.dataset.count);
+                        let v = 0, step = to / 55;
+                        const t = setInterval(() => {
+                            v += step; el.textContent = Math.min(Math.floor(v), to);
+                            if (v >= to) clearInterval(t);
+                        }, 16);
+                    }
+                    cobs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.st').forEach(s => cobs.observe(s));
+
+        /* Subtle mouse parallax on blobs */
+        let mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+            mx = (e.clientX / window.innerWidth - 0.5) * 2;
+            my = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
+        const blobs = document.querySelectorAll('.blob');
+        (function tick() {
+            blobs.forEach((b, i) => {
+                const depth = (i % 4 + 1) * 6;
+                const curr = b.style.transform || '';
+                // Only add parallax offset on top of the CSS animation
+                b.style.setProperty('--px', `${mx * depth}px`);
+                b.style.setProperty('--py', `${my * depth}px`);
+            });
+            requestAnimationFrame(tick);
+        })();
+    </script>
+</body>
+
+</html>
