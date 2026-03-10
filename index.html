@@ -169,30 +169,23 @@
             text-decoration: none;
         }
 
-        .gdg-svg {
-            width: 30px;
-            height: 30px;
-            flex-shrink: 0;
+        .brand-logo {
+            height: 38px; /* Increased size to make it more visible */
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-dark {
             display: none;
         }
 
-        .gdg-img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            flex-shrink: 0;
+        [data-theme="dark"] .logo-light {
+            display: none;
         }
 
-        .brand-name {
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--t1);
-            letter-spacing: -.5px;
-        }
-
-        .brand-name em {
-            font-style: normal;
-            color: var(--blue);
+        [data-theme="dark"] .logo-dark {
+            display: block;
         }
 
         .nav-links {
@@ -1194,8 +1187,9 @@
 
     <!-- ══════ NAVBAR ══════ -->
     <nav class="nav">
-        <a href="index.html" class="nav-brand">
-            <span class="brand-name">Tech<em>Zaar</em></span>
+        <a href="index.html" class="nav-brand" aria-label="TechZaar Home">
+            <img src="assets/images/techzaar.png" alt="TechZaar Logo" class="brand-logo logo-light" />
+            <img src="assets/images/techzaar-dark.png" alt="TechZaar Logo" class="brand-logo logo-dark" />
         </a>
 
         <ul class="nav-links" id="navLinks">
@@ -1252,7 +1246,7 @@
     <div class="stats-wrap">
         <div class="stats">
             <div class="st">
-                <div class="st-n" style="color:var(--blue);" data-count="12">0</div>
+                <div class="st-n" style="color:var(--blue);" data-count="11">0</div>
                 <div class="st-l">Activities</div>
             </div>
             <div class="st">
@@ -1282,7 +1276,7 @@
       [Photobooth wide=2]        [Build Wall]
       [QR Hunt] [Tech Frame] [Debug Wall]
       [Gaming]  [GDG Arcade] [Multiplayer]
-      [VR]      [Problem Solving] [Art Installations]
+      [Problem Solving] [Art Installations]
       [GDE Expert Talk wide=2]   [empty→ no! GDE is last wide alone]
 
       To avoid ANY empty slot on 2-col mobile, NO wide cards at all.
@@ -1304,9 +1298,7 @@
                     <div class="card-ico">📸</div>
                     <div class="card-text">
                         <div class="card-name">Photobooth Area</div>
-                        <p class="card-desc">A Google-themed photo zone with a Gemini prompt frame and Google Search bar
-                            frame — with TechZaar and GDG logos. Strike a pose, share it, and boost the community's
-                            reach online.</p>
+                        <p class="card-desc">Step into the spotlight at our Google-themed photo zone. Complete with custom TechZaar props and backdrops, it's the perfect spot to capture the moment, share your vibe, and boost the community's reach.</p>
                         <span class="card-tag">📱 Social Media</span>
                     </div>
                 </div>
@@ -1318,8 +1310,7 @@
                 <div class="card-body">
                     <div class="card-ico">🧱</div>
                     <div class="card-name">"I Will Build ___" Wall</div>
-                    <p class="card-desc">Complete the sentence on a giant sticky-note board. An AI startup? A better
-                        Libya? Your future? Be part of the community wall of dreams.</p>
+                    <p class="card-desc">What's your next big idea? Grab a sticky note and help us build a collaborative wall of dreams. Whether it's an AI startup, a better Libya, or mastering a new framework, leave your mark.</p>
                     <span class="card-tag">✍️ Interactive</span>
                 </div>
             </div>
@@ -1330,8 +1321,7 @@
                 <div class="card-body">
                     <div class="card-ico">🔍</div>
                     <div class="card-name">QR Code Treasure Hunt</div>
-                    <p class="card-desc">QR codes are hidden across the venue. Collect them all to enter the raffle and
-                        win exciting prizes. Explore every corner!</p>
+                    <p class="card-desc">Ready for a challenge? We've scattered hidden QR codes throughout the venue. Track them down, scan them all, and unlock your chance to win exclusive raffle prizes. Happy hunting!</p>
                     <span class="card-tag">🎁 Raffle Prizes</span>
                 </div>
             </div>
@@ -1340,10 +1330,9 @@
             <div class="card" style="--ca:var(--red);">
                 <div class="card-bar"></div>
                 <div class="card-body">
-                    <div class="card-ico">🎭</div>
+                    <div class="card-ico">🖼️</div>
                     <div class="card-name">Tech Inspired Frame</div>
-                    <p class="card-desc">Step inside a giant frame styled like a Gemini prompt or Google Search bar. The
-                        most shareable photo moment of the night.</p>
+                    <p class="card-desc">Frame your brilliance! Step inside giant, life-sized TechZaar cutouts. Guaranteed to be the most shareable, double-tap-worthy moment of the night.</p>
                     <span class="card-tag">📷 Photo Op</span>
                 </div>
             </div>
@@ -1354,8 +1343,7 @@
                 <div class="card-body">
                     <div class="card-ico">🐛</div>
                     <div class="card-name">Debug The Wall</div>
-                    <p class="card-desc">A massive 1.5 × 1.5 m printout of code hides one intentional bug. Spot it! A
-                        gamified challenge for developers of all levels.</p>
+                    <p class="card-desc">A massive 1.5 × 1.5 meter wall of code hides one perfectly subtle bug. Do you have the eagle eyes to spot it? Step up to this gamified challenge designed to test developers of all levels.</p>
                     <span class="card-tag">💻 Dev Challenge</span>
                 </div>
             </div>
@@ -1366,8 +1354,7 @@
                 <div class="card-body">
                     <div class="card-ico">🎮</div>
                     <div class="card-name">Gaming Simulator</div>
-                    <p class="card-desc">A dedicated gaming zone with console for friendly competitions. Casual or
-                        competitive — everyone is welcome.</p>
+                    <p class="card-desc">Take a breather and level up in our dedicated gaming zone. Whether you're a casual player looking for fun or a hardcore competitor ready to dominate, grab a controller and jump in.</p>
                     <span class="card-tag">🕹️ Entertainment</span>
                 </div>
             </div>
@@ -1378,8 +1365,7 @@
                 <div class="card-body">
                     <div class="card-ico">👾</div>
                     <div class="card-name">GDG Arcade</div>
-                    <p class="card-desc">Mini-games built by the GDG OC team, Made
-                        by us</p>
+                    <p class="card-desc">Discover a curated collection of bite-sized, addictive mini-games designed and developed entirely from scratch by our very own GDG OC team.</p>
                     <span class="card-tag">🎲 GDG-Built</span>
                 </div>
             </div>
@@ -1388,51 +1374,36 @@
             <div class="card" style="--ca:var(--blue);">
                 <div class="card-bar"></div>
                 <div class="card-body">
-                    <div class="card-ico">📡</div>
+                    <div class="card-ico">👥</div>
                     <div class="card-name">Multiplayer Game</div>
-                    <p class="card-desc">A real-time game you join from your own phone — no controller needed. Compete
-                        live on the big screen with everyone in the venue.</p>
+                    <p class="card-desc">Turn your smartphone into the ultimate controller. Join this massive, real-time multiplayer showdown and compete live on the big screen against everyone else in the event.</p>
                     <span class="card-tag">📲 Phone-Join</span>
                 </div>
             </div>
 
-            <!-- 9. VR Experience -->
-            <div class="card" style="--ca:var(--yellow);">
-                <div class="card-bar"></div>
-                <div class="card-body">
-                    <div class="card-ico">🥽</div>
-                    <div class="card-name">VR Experience</div>
-                    <p class="card-desc">Slip on a headset and step into another world. VR give everyone a
-                        hands-on taste of immersive technology — no experience needed.</p>
-                    <span class="card-tag">🌐 Immersive Tech</span>
-                </div>
-            </div>
-
-            <!-- 10. Problem Solving -->
+            <!-- 9. Problem Solving -->
             <div class="card" style="--ca:var(--red);">
                 <div class="card-bar"></div>
                 <div class="card-body">
                     <div class="card-ico">🧠</div>
                     <div class="card-name">Problem Solving Competition</div>
-                    <p class="card-desc">Test your logic and coding skills live. Compete against the
-                        Benghazi tech community and prove your abilities.</p>
+                    <p class="card-desc">Think you have what it takes? Put your algorithmic logic and coding skills to the ultimate test. Go head-to-head against Benghazi's brightest minds and claim your spot at the top.</p>
                     <span class="card-tag">⚡ Competition</span>
                 </div>
             </div>
 
-            <!-- 11. Art Installations -->
+            <!-- 10. Art Installations -->
             <div class="card" style="--ca:var(--green);">
                 <div class="card-bar"></div>
                 <div class="card-body">
-                    <div class="card-ico">🖼️</div>
+                    <div class="card-ico">🎨</div>
                     <div class="card-name">Art Installations</div>
-                    <p class="card-desc">Immersive multi-screen showcases blending tech and creativity — celebrating the
-                        intersection of code, design, and human expression.</p>
-                    <span class="card-tag">🎨 Immersive</span>
+                    <p class="card-desc">Experience immersive, multi-screen showcases where technology meets creativity. A stunning visual celebration exploring the beautiful intersection of code, design, and human expression.</p>
+                    <span class="card-tag">🎭 Immersive</span>
                 </div>
             </div>
 
-            <!-- 12. GDE Expert Talk — full width on ALL breakpoints -->
+            <!-- 11. GDE Expert Talk — full width on ALL breakpoints -->
             <div class="card gde" style="--ca:var(--red);">
                 <div class="card-bar"></div>
                 <div class="card-body">
@@ -1580,7 +1551,7 @@
                     <div class="soc-arrow">→</div>
                 </a>
 
-                <!-- TechZaar Instagram -->
+                <!-- Tanmia360 Instagram -->
                 <a href="https://www.instagram.com/tanmia360/" target="_blank" rel="noopener noreferrer"
                     class="soc-card" style="--sc:#34A853;">
                     <div class="soc-icon">
@@ -1593,7 +1564,7 @@
                     </div>
                     <div class="soc-info">
                         <div class="soc-platform">Instagram</div>
-                        <div class="soc-handle">TechZaar</div>
+                        <div class="soc-handle">Tanmia 360</div>
                     </div>
                     <div class="soc-arrow">→</div>
                 </a>
