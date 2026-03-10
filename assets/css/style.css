@@ -89,22 +89,23 @@ body {
     text-decoration: none;
 }
 
-.nav-logo {
-    width: 36px;
-    height: 36px;
+.brand-logo {
+    height: 38px;
+    width: auto;
     object-fit: contain;
+    display: block;
 }
 
-.nav-title {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--text-primary);
-    letter-spacing: -0.3px;
+.logo-dark {
+    display: none;
 }
 
-.nav-title span {
-    color: var(--g-blue);
+[data-theme="dark"] .logo-light {
+    display: none;
+}
+
+[data-theme="dark"] .logo-dark {
+    display: block;
 }
 
 .nav-links {
