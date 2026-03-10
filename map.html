@@ -2,8 +2,8 @@
 <html lang="en" data-theme="light">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechZaar — Venue Map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -235,14 +235,12 @@
             display: block;
         }
 
-        /* THE REAL MAP IMAGE */
         .map-img {
             width: 100%;
             display: block;
             height: auto;
         }
 
-        /* PIN OVERLAY — sits on top of image */
         .pins-overlay {
             position: absolute;
             inset: 0;
@@ -264,7 +262,6 @@
             transform: translate(-50%, -100%) scale(1.15);
         }
 
-        /* Pin head */
         .pin-head {
             width: 36px;
             height: 36px;
@@ -287,7 +284,6 @@
             animation: glow .9s ease infinite;
         }
 
-        /* Pin tail */
         .pin-tail {
             width: 0;
             height: 0;
@@ -296,7 +292,6 @@
             margin-top: -2px;
         }
 
-        /* Pin label */
         .pin-label {
             background: rgba(0, 0, 0, .72);
             color: #fff;
@@ -310,7 +305,6 @@
             pointer-events: none;
         }
 
-        /* Pulse ring on lit pin */
         .pin.lit::before {
             content: '';
             position: absolute;
@@ -349,7 +343,6 @@
             }
         }
 
-        /* Floor badge */
         .floor-badge {
             position: absolute;
             top: 12px;
@@ -615,28 +608,11 @@
 
 <body>
 
-<<<<<<< HEAD
     <nav>
         <a href="index.html" class="brand">Tech<em>Zaar</em></a>
         <div class="nav-right">
             <a href="index.html" class="back-btn">← Activities</a>
-            <button class="theme-btn" id="themeToggle">🌙</button>
-=======
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-brand" aria-label="TechZaar Home">
-            <img src="assets/images/techzaar.png" alt="TechZaar Logo" class="brand-logo logo-light" />
-            <img src="assets/images/techzaar-dark.png" alt="TechZaar Logo" class="brand-logo logo-dark" />
-        </a>
-        <ul class="nav-links" id="navLinks" role="list">
-            <li><a href="index.html">Activities</a></li>
-            <li><a href="map.html" class="active">Venue Map</a></li>
-        </ul>
-        <div class="nav-actions">
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
-            <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
->>>>>>> ad178c6c99c187e0421f00617ed4f44d499e49fd
+            <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
         </div>
     </nav>
 
@@ -653,137 +629,89 @@
         </div>
 
         <div class="map-layout">
-
-            <!-- MAP -->
             <div class="map-wrap">
-
-                <!-- ══ FLOOR 1 ══ -->
                 <div class="map-floor on" id="fl1">
                     <div class="floor-badge">Floor 1 · Ground Level</div>
                     <img class="map-img" src="assets/images/floor1.png" alt="Floor 1 Map" draggable="false">
                     <div class="pins-overlay">
-
-                        <!--
-            Floor 1 image: 741×610px
-            Positions based on actual map areas:
-            - GDG Activities/Lobby: center ~45%,55%
-            - Art Exhibitions (Office 1 area): left-center ~28%,72%
-            - Robotics/left area: ~18%,65%
-            - Cafe Casa Mira: bottom-right ~65%,78%
-          -->
-
-                        <!-- QR Hunt — GDG Activities lobby center -->
                         <div class="pin" id="pin-qr-hunt" style="--pin-color:#FBBC04;left:44%;top:52%"
                             onclick="pick('qr-hunt')">
                             <div class="pin-head" style="background:#FBBC04">🔍</div>
                             <div class="pin-tail" style="border-top:10px solid #FBBC04"></div>
                             <div class="pin-label">QR Hunt</div>
                         </div>
-
-                        <!-- Tech Frame — GDG Activities lobby -->
                         <div class="pin" id="pin-tech-frame" style="--pin-color:#EA4335;left:36%;top:52%"
                             onclick="pick('tech-frame')">
                             <div class="pin-head" style="background:#EA4335">🎭</div>
                             <div class="pin-tail" style="border-top:10px solid #EA4335"></div>
                             <div class="pin-label">Tech Frame</div>
                         </div>
-
-                        <!-- Debug Wall — GDG Activities lobby -->
                         <div class="pin" id="pin-debug-wall" style="--pin-color:#4285F4;left:52%;top:52%"
                             onclick="pick('debug-wall')">
                             <div class="pin-head" style="background:#4285F4">🐛</div>
                             <div class="pin-tail" style="border-top:10px solid #4285F4"></div>
                             <div class="pin-label">Debug Wall</div>
                         </div>
-
-                        <!-- Gaming Simulator — GDG Lobby lower -->
                         <div class="pin" id="pin-gaming" style="--pin-color:#34A853;left:36%;top:64%"
                             onclick="pick('gaming')">
                             <div class="pin-head" style="background:#34A853">🎮</div>
                             <div class="pin-tail" style="border-top:10px solid #34A853"></div>
                             <div class="pin-label">Gaming Sim</div>
                         </div>
-
-                        <!-- GDG Arcade — GDG Lobby lower -->
                         <div class="pin" id="pin-gdg-arcade" style="--pin-color:#FBBC04;left:44%;top:64%"
                             onclick="pick('gdg-arcade')">
                             <div class="pin-head" style="background:#FBBC04">👾</div>
                             <div class="pin-tail" style="border-top:10px solid #FBBC04"></div>
                             <div class="pin-label">GDG Arcade</div>
                         </div>
-
-                        <!-- Multiplayer — GDG Lobby lower -->
                         <div class="pin" id="pin-multiplayer" style="--pin-color:#4285F4;left:52%;top:64%"
                             onclick="pick('multiplayer')">
                             <div class="pin-head" style="background:#4285F4">📡</div>
                             <div class="pin-tail" style="border-top:10px solid #4285F4"></div>
                             <div class="pin-label">Multiplayer</div>
                         </div>
-
-                        <!-- Problem Solving — Robotics area left -->
                         <div class="pin" id="pin-problem-solving" style="--pin-color:#EA4335;left:18%;top:68%"
                             onclick="pick('problem-solving')">
                             <div class="pin-head" style="background:#EA4335">🧠</div>
                             <div class="pin-tail" style="border-top:10px solid #EA4335"></div>
                             <div class="pin-label">Problem Solving</div>
                         </div>
-
-                        <!-- Art Installations — Art Exhibitions zone -->
                         <div class="pin" id="pin-art" style="--pin-color:#34A853;left:30%;top:78%"
                             onclick="pick('art')">
                             <div class="pin-head" style="background:#34A853">🖼️</div>
                             <div class="pin-tail" style="border-top:10px solid #34A853"></div>
                             <div class="pin-label">Art Installations</div>
                         </div>
-
                     </div>
                 </div>
 
-                <!-- ══ FLOOR 2 ══ -->
                 <div class="map-floor" id="fl2">
                     <div class="floor-badge">Floor 2 · Upper Level</div>
                     <img class="map-img" src="assets/images/floor2.png" alt="Floor 2 Map" draggable="false">
                     <div class="pins-overlay">
-
-                        <!--
-            Floor 2 image: 858×687px
-            - Meeting Room (GDE Talk): top center ~52%,18%
-            - Roof Garden left (Build Wall): ~25%,80%
-            - Roof Garden right (Photobooth): ~86%,78%
-          -->
-
-                        <!-- GDE Expert Talk — Meeting Room top center -->
                         <div class="pin" id="pin-gde-talk" style="--pin-color:#EA4335;left:52%;top:18%"
                             onclick="pick('gde-talk')">
                             <div class="pin-head" style="background:#EA4335">🎙️</div>
                             <div class="pin-tail" style="border-top:10px solid #EA4335"></div>
                             <div class="pin-label">GDE Expert Talk</div>
                         </div>
-
-                        <!-- I Will Build Wall — Roof Garden left -->
                         <div class="pin" id="pin-build-wall" style="--pin-color:#34A853;left:24%;top:78%"
                             onclick="pick('build-wall')">
                             <div class="pin-head" style="background:#34A853">🧱</div>
                             <div class="pin-tail" style="border-top:10px solid #34A853"></div>
                             <div class="pin-label">Build Wall</div>
                         </div>
-
-                        <!-- Photobooth — Roof Garden far right (handwritten: Photo booth) -->
                         <div class="pin" id="pin-photobooth" style="--pin-color:#4285F4;left:86%;top:78%"
                             onclick="pick('photobooth')">
                             <div class="pin-head" style="background:#4285F4">📸</div>
                             <div class="pin-tail" style="border-top:10px solid #4285F4"></div>
                             <div class="pin-label">Photobooth</div>
                         </div>
-
                     </div>
                 </div>
+            </div>
 
-            </div><!-- /map-wrap -->
-
-            <!-- SIDEBAR -->
             <div class="sidebar">
-
                 <div class="info-card">
                     <div class="info-bar" id="infoBar"></div>
                     <div class="info-body">
@@ -850,7 +778,6 @@
                             class="li-fl">F1</span><span class="li-arr">›</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -869,58 +796,68 @@
             'gdg-arcade': { name: 'GDG Arcade', ico: '👾', floor: 1, loc: 'GDG Activities · Lobby', color: '#FBBC04', desc: 'Original mini-games built by the GDG OC team, running on a dedicated TV.', tag: '🎲 GDG-Built' },
             'multiplayer': { name: 'Multiplayer Game', ico: '📡', floor: 1, loc: 'GDG Activities · Lobby', color: '#4285F4', desc: 'Join from your phone — compete live on the big Gaffar TV screen.', tag: '📲 Phone-Join' },
             'problem-solving': { name: 'Problem Solving Competition', ico: '🧠', floor: 1, loc: 'Robotics Area · Left Side', color: '#EA4335', desc: 'Test logic and coding skills live. Compete against the Benghazi tech community.', tag: '⚡ Competition' },
-            'art': { name: 'Art Installations', ico: '🖼️', floor: 1, loc: 'Art Exhibitions Zone', color: '#34A853', desc: 'Immersive multi-screen showcases blending tech and creativity.', tag: '🎨 Immersive' },
+            'art': { name: 'Art Installations', ico: '🖼️', floor: 1, loc: 'Art Exhibitions Zone', color: '#34A853', desc: 'Immersive multi-screen showcases blending tech and creativity.', tag: '🎨 Immersive' }
         };
 
         function switchFloor(n) {
             document.getElementById('fl1').classList.toggle('on', n === 1);
             document.getElementById('fl2').classList.toggle('on', n === 2);
-            document.querySelectorAll('.ftab').forEach((t, i) => t.classList.toggle('active', i === n - 1));
+
+            document.querySelector('.ftab.f1').classList.toggle('active', n === 1);
+            document.querySelector('.ftab.f2').classList.toggle('active', n === 2);
         }
 
         function pick(id) {
-            const a = DATA[id]; if (!a) return;
-            switchFloor(a.floor);
-            document.querySelectorAll('.pin').forEach(p => p.classList.remove('lit'));
-            document.querySelectorAll('.li').forEach(l => l.classList.remove('on'));
-            const pin = document.getElementById('pin-' + id);
-            if (pin) pin.classList.add('lit');
-            const li = document.querySelector('.li[data-a="' + id + '"]');
-            if (li) { li.classList.add('on'); li.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            const data = DATA[id];
+            if (!data) return;
+
+            if (data.floor === 1 && !document.getElementById('fl1').classList.contains('on')) switchFloor(1);
+            if (data.floor === 2 && !document.getElementById('fl2').classList.contains('on')) switchFloor(2);
+
             document.getElementById('infoEmpty').style.display = 'none';
             document.getElementById('infoDetail').classList.add('on');
-            document.getElementById('infoBar').style.background = a.color;
-            const fb = document.getElementById('infoFloor');
-            fb.textContent = 'Floor ' + a.floor; fb.style.background = a.color + '20'; fb.style.color = a.color;
-            document.getElementById('infoIco').textContent = a.ico;
-            document.getElementById('infoName').textContent = a.name;
-            document.getElementById('infoDesc').textContent = a.desc;
-            document.getElementById('infoLoc').textContent = a.loc;
+
+            document.getElementById('infoBar').style.background = data.color;
+            document.getElementById('infoFloor').textContent = `Floor ${data.floor}`;
+            document.getElementById('infoFloor').style.color = data.color;
+            document.getElementById('infoIco').textContent = data.ico;
+            document.getElementById('infoName').textContent = data.name;
+            document.getElementById('infoDesc').textContent = data.desc;
+            document.getElementById('infoLoc').textContent = data.loc;
+
             const tag = document.getElementById('infoTag');
-            tag.textContent = a.tag; tag.style.background = a.color + '18'; tag.style.color = a.color;
+            tag.textContent = data.tag;
+            tag.style.background = data.color + '20';
+            tag.style.color = data.color;
+
+            document.querySelectorAll('.pin').forEach(p => p.classList.remove('lit'));
+            const pin = document.getElementById('pin-' + id);
+            if (pin) pin.classList.add('lit');
+
+            document.querySelectorAll('.li').forEach(l => l.classList.remove('on'));
+            const liItem = document.querySelector(`.li[data-a="${id}"]`);
+            if (liItem) liItem.classList.add('on');
+
             const toast = document.getElementById('toast');
-            document.getElementById('tDot').style.background = a.color;
-            document.getElementById('tTxt').textContent = a.ico + ' ' + a.name + ' · Floor ' + a.floor;
+            document.getElementById('tDot').style.background = data.color;
+            document.getElementById('tTxt').textContent = `${data.name} selected`;
             toast.classList.add('on');
-            clearTimeout(window._tt);
-            window._tt = setTimeout(() => toast.classList.remove('on'), 3000);
+
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('on');
+            }, 3000);
         }
 
-        // URL param from index
-        window.addEventListener('DOMContentLoaded', () => {
-            const act = new URLSearchParams(location.search).get('activity');
-            if (act && DATA[act]) setTimeout(() => pick(act), 200);
-        });
-
-        // Theme
-        const T = document.getElementById('themeToggle'), R = document.documentElement;
-        const sv = localStorage.getItem('tz-theme') || 'light';
-        R.setAttribute('data-theme', sv); T.textContent = sv === 'dark' ? '☀️' : '🌙';
-        T.addEventListener('click', () => {
-            const n = R.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            R.setAttribute('data-theme', n); localStorage.setItem('tz-theme', n);
-            T.textContent = n === 'dark' ? '☀️' : '🌙';
-        });
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const html = document.documentElement;
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                themeToggle.textContent = isDark ? '🌙' : '☀️';
+            });
+        }
     </script>
 </body>
 
