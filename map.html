@@ -53,7 +53,73 @@
             font-family: 'DM Sans', sans-serif;
             background: var(--bg);
             color: var(--t1);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            transition: background .35s, color .35s;
+            /* The blob canvas sits behind everything */
+            position: relative;
             min-height: 100vh;
+        }
+
+        /* ═══════════════════════════ FULL-PAGE BLOB LAYER ═══════════════════════════ */
+        /* Fixed so blobs stay put as user scrolls — covers entire page */
+        #blob-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Gradient mesh — subtle colour washes across the whole viewport */
+        #blob-canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 55% at 88% 12%, rgba(66, 133, 244, .11) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 50% at 10% 88%, rgba(52, 168, 83, .09) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 45% at 78% 82%, rgba(234, 67, 53, .08) 0%, transparent 60%),
+                radial-gradient(ellipse 35% 35% at 6% 18%, rgba(251, 188, 4, .08) 0%, transparent 58%),
+                radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .04) 0%, transparent 70%);
+        }
+
+        [data-theme="dark"] #blob-canvas::before {
+            background:
+                radial-gradient(ellipse 60% 55% at 88% 12%, rgba(66, 133, 244, .17) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 50% at 10% 88%, rgba(52, 168, 83, .13) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 45% at 78% 82%, rgba(234, 67, 53, .11) 0%, transparent 60%),
+                radial-gradient(ellipse 35% 35% at 6% 18%, rgba(251, 188, 4, .11) 0%, transparent 58%),
+                radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .06) 0%, transparent 70%);
+        }
+
+        /* Individual floating blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: .22;
+            filter: blur(2px);
+            animation: bfloat ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .blob {
+            opacity: .20;
+        }
+
+        @keyframes bfloat {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            33% {
+                transform: translateY(-22px) scale(1.04);
+            }
+
+            66% {
+                transform: translateY(14px) scale(.97);
+            }
         }
 
         /* ═══ NAVBAR (same as index.html) ═══ */
@@ -209,6 +275,8 @@
 
         .page {
             padding-top: 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .map-header {
@@ -716,6 +784,49 @@
 </head>
 
 <body>
+    <!-- ══════ FULL-PAGE BLOB LAYER ══════ -->
+    <div id="blob-canvas">
+        <!-- Blue blobs -->
+        <div class="blob" style="width:320px;height:320px;background:#4285F4;top:4%;left:72%;animation-duration:10s;">
+        </div>
+        <div class="blob"
+            style="width:160px;height:160px;background:#4285F4;top:55%;left:12%;animation-duration:13s;animation-delay:-6s;">
+        </div>
+        <div class="blob"
+            style="width:100px;height:100px;background:#4285F4;top:82%;left:58%;animation-duration:17s;animation-delay:-4s;">
+        </div>
+        <!-- Red blobs -->
+        <div class="blob"
+            style="width:220px;height:220px;background:#EA4335;top:72%;left:2%;animation-duration:12s;animation-delay:-3s;">
+        </div>
+        <div class="blob"
+            style="width:120px;height:120px;background:#EA4335;top:18%;left:30%;animation-duration:15s;animation-delay:-8s;">
+        </div>
+        <div class="blob"
+            style="width:80px;height:80px;background:#EA4335;top:45%;left:85%;animation-duration:18s;animation-delay:-10s;">
+        </div>
+        <!-- Yellow blobs -->
+        <div class="blob"
+            style="width:180px;height:180px;background:#FBBC04;top:30%;left:88%;animation-duration:11s;animation-delay:-5s;">
+        </div>
+        <div class="blob"
+            style="width:110px;height:110px;background:#FBBC04;top:88%;left:25%;animation-duration:14s;animation-delay:-2s;">
+        </div>
+        <div class="blob"
+            style="width:70px;height:70px;background:#FBBC04;top:10%;left:50%;animation-duration:19s;animation-delay:-11s;">
+        </div>
+        <!-- Green blobs -->
+        <div class="blob"
+            style="width:250px;height:250px;background:#34A853;top:60%;left:68%;animation-duration:9s;animation-delay:-7s;">
+        </div>
+        <div class="blob"
+            style="width:140px;height:140px;background:#34A853;top:5%;left:8%;animation-duration:16s;animation-delay:-1s;">
+        </div>
+        <div class="blob"
+            style="width:90px;height:90px;background:#34A853;top:40%;left:42%;animation-duration:20s;animation-delay:-13s;">
+        </div>
+    </div>
+
     <nav class="nav">
         <a href="index.html" class="nav-brand" aria-label="TechZaar Home">
             <img src="assets/images/techzaar.png" alt="TechZaar Logo" class="brand-logo logo-light" />
@@ -1168,6 +1279,23 @@
             document.querySelectorAll('.nav-links a').forEach(link => {
                 if (link.getAttribute('href') === currentPage) link.classList.add('active');
             });
+
+            /* Subtle mouse parallax on blobs */
+            let mx = 0, my = 0;
+            document.addEventListener('mousemove', e => {
+                mx = (e.clientX / window.innerWidth - 0.5) * 2;
+                my = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+            const blobs = document.querySelectorAll('.blob');
+            (function tick() {
+                blobs.forEach((b, i) => {
+                    const depth = (i % 4 + 1) * 6;
+                    // Only add parallax offset on top of the CSS animation
+                    b.style.setProperty('--px', `${mx * depth}px`);
+                    b.style.setProperty('--py', `${my * depth}px`);
+                });
+                requestAnimationFrame(tick);
+            })();
         </script>
 </body>
 
