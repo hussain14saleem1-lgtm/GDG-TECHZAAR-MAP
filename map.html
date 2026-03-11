@@ -56,13 +56,10 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             transition: background .35s, color .35s;
-            /* The blob canvas sits behind everything */
             position: relative;
             min-height: 100vh;
         }
 
-        /* ═══════════════════════════ FULL-PAGE BLOB LAYER ═══════════════════════════ */
-        /* Fixed so blobs stay put as user scrolls — covers entire page */
         #blob-canvas {
             position: fixed;
             inset: 0;
@@ -71,7 +68,6 @@
             overflow: hidden;
         }
 
-        /* Gradient mesh — subtle colour washes across the whole viewport */
         #blob-canvas::before {
             content: '';
             position: absolute;
@@ -93,7 +89,6 @@
                 radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .06) 0%, transparent 70%);
         }
 
-        /* Individual floating blobs */
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -122,7 +117,7 @@
             }
         }
 
-        /* ═══ NAVBAR (same as index.html) ═══ */
+        /* ═══ NAVBAR ═══ */
         .nav {
             position: fixed;
             top: 0;
@@ -273,6 +268,7 @@
             }
         }
 
+        /* ═══ PAGE ═══ */
         .page {
             padding-top: 60px;
             position: relative;
@@ -369,6 +365,7 @@
             color: var(--B);
         }
 
+        /* ═══ MAP LAYOUT — map left, sidebar right ═══ */
         .map-layout {
             max-width: 1300px;
             margin: 0 auto;
@@ -480,78 +477,29 @@
             display: block;
         }
 
-        .f2-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            padding: 60px 30px;
-            text-align: center;
-            background: linear-gradient(145deg, #dce8ff, #e8f0fe);
-            min-height: 400px;
-        }
-
-        [data-theme=dark] .f2-placeholder {
-            background: linear-gradient(145deg, #111d30, #0d1a2e);
-        }
-
-        .f2-placeholder-ico {
-            font-size: 48px;
-            opacity: .4;
-        }
-
-        .f2-placeholder-txt {
-            font-size: 14px;
-            color: var(--t2);
-            line-height: 1.65;
-        }
-
-        .f2-placeholder-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            color: var(--B);
-            background: color-mix(in srgb, var(--B) 12%, transparent);
-            padding: 5px 12px;
-            border-radius: 20px;
-        }
-
-        .f2-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-            max-width: 290px;
-            margin-top: 6px;
-        }
-
-        .f2-btn {
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'DM Sans', sans-serif;
-            transition: opacity .15s;
-        }
-
-        .f2-btn:hover {
-            opacity: .85;
-        }
-
+        /* ═══ SIDEBAR ═══ */
         .sidebar {
             display: flex;
             flex-direction: column;
             gap: 14px;
             position: sticky;
             top: 72px;
+            max-height: calc(100vh - 90px);
+            overflow-y: auto;
+        }
+
+        /* Hide scrollbar but allow scroll */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--bdr);
+            border-radius: 4px;
         }
 
         .info-card {
@@ -560,6 +508,7 @@
             border: 1.5px solid var(--bdr);
             box-shadow: var(--s1);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .info-bar {
@@ -663,6 +612,7 @@
             border: 1.5px solid var(--bdr);
             box-shadow: var(--s1);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .list-hdr {
@@ -723,6 +673,7 @@
             color: var(--t3);
         }
 
+        /* ═══ TOAST ═══ */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -754,6 +705,7 @@
             border-radius: 50%;
         }
 
+        /* ═══ RESPONSIVE ═══ */
         @media(max-width:1000px) {
             .map-layout {
                 grid-template-columns: 1fr;
@@ -761,6 +713,8 @@
 
             .sidebar {
                 position: static;
+                max-height: none;
+                overflow-y: visible;
                 flex-direction: row;
                 flex-wrap: wrap;
             }
@@ -786,7 +740,6 @@
 <body>
     <!-- ══════ FULL-PAGE BLOB LAYER ══════ -->
     <div id="blob-canvas">
-        <!-- Blue blobs -->
         <div class="blob" style="width:320px;height:320px;background:#4285F4;top:4%;left:72%;animation-duration:10s;">
         </div>
         <div class="blob"
@@ -795,7 +748,6 @@
         <div class="blob"
             style="width:100px;height:100px;background:#4285F4;top:82%;left:58%;animation-duration:17s;animation-delay:-4s;">
         </div>
-        <!-- Red blobs -->
         <div class="blob"
             style="width:220px;height:220px;background:#EA4335;top:72%;left:2%;animation-duration:12s;animation-delay:-3s;">
         </div>
@@ -805,7 +757,6 @@
         <div class="blob"
             style="width:80px;height:80px;background:#EA4335;top:45%;left:85%;animation-duration:18s;animation-delay:-10s;">
         </div>
-        <!-- Yellow blobs -->
         <div class="blob"
             style="width:180px;height:180px;background:#FBBC04;top:30%;left:88%;animation-duration:11s;animation-delay:-5s;">
         </div>
@@ -815,7 +766,6 @@
         <div class="blob"
             style="width:70px;height:70px;background:#FBBC04;top:10%;left:50%;animation-duration:19s;animation-delay:-11s;">
         </div>
-        <!-- Green blobs -->
         <div class="blob"
             style="width:250px;height:250px;background:#34A853;top:60%;left:68%;animation-duration:9s;animation-delay:-7s;">
         </div>
@@ -827,17 +777,16 @@
         </div>
     </div>
 
+    <!-- ══════ NAVBAR ══════ -->
     <nav class="nav">
         <a href="index.html" class="nav-brand" aria-label="TechZaar Home">
             <img src="assets/images/techzaar.png" alt="TechZaar Logo" class="brand-logo logo-light" />
             <img src="assets/images/techzaar-dark.png" alt="TechZaar Logo" class="brand-logo logo-dark" />
         </a>
-
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Activities</a></li>
-            <li><a href="map.html">Venue Map</a></li>
+            <li><a href="map.html" class="active">Venue Map</a></li>
         </ul>
-
         <div class="nav-r">
             <button class="tbtn" id="themeToggle" aria-label="Toggle theme">🌙</button>
             <button class="hbg" id="hbg" aria-label="Menu">
@@ -845,6 +794,8 @@
             </button>
         </div>
     </nav>
+
+    <!-- ══════ PAGE ══════ -->
     <div class="page">
         <div class="map-header">
             <div>
@@ -856,9 +807,13 @@
                 <button class="ftab f2" onclick="switchFloor(2)">&#127963; Floor 2</button>
             </div>
         </div>
+
         <div class="map-layout">
+
+            <!-- ══ MAP ══ -->
             <div class="map-wrap">
 
+                <!-- Floor 1 -->
                 <div class="map-floor on" id="fl1">
                     <div class="map-inner">
                         <img class="map-img" src="assets/images/Iso-f1.png" alt="Floor 1 3D Map" draggable="false">
@@ -1041,6 +996,7 @@
                     </div>
                 </div>
 
+                <!-- Floor 2 -->
                 <div class="map-floor" id="fl2">
                     <div class="map-inner">
                         <img class="map-img" src="assets/images/Iso-f2.png" alt="Floor 2 3D Map" draggable="false">
@@ -1119,184 +1075,189 @@
                     </div>
                 </div>
 
-                <div class="sidebar">
-                    <div class="info-card">
-                        <div class="info-bar" id="infoBar"></div>
-                        <div class="info-body">
-                            <div class="info-empty" id="infoEmpty">
-                                <div class="info-empty-ico">&#128205;</div>
-                                <div class="info-empty-txt">Tap any pin on the map or select an activity below to see
-                                    where it is</div>
-                            </div>
-                            <div class="info-detail" id="infoDetail">
-                                <span class="info-floor" id="infoFloor"></span>
-                                <span class="info-ico" id="infoIco"></span>
-                                <div class="info-name" id="infoName"></div>
-                                <div class="info-desc" id="infoDesc"></div>
-                                <div class="info-loc">&#128205; <span id="infoLoc"></span></div>
-                                <span class="info-tag" id="infoTag"></span>
-                            </div>
+            </div><!-- /.map-wrap -->
+
+            <!-- ══ SIDEBAR — sibling of map-wrap, appears in right column ══ -->
+            <div class="sidebar">
+                <div class="info-card">
+                    <div class="info-bar" id="infoBar"></div>
+                    <div class="info-body">
+                        <div class="info-empty" id="infoEmpty">
+                            <div class="info-empty-ico">&#128205;</div>
+                            <div class="info-empty-txt">Tap any pin on the map or select an activity below to see where
+                                it is</div>
                         </div>
-                    </div>
-                    <div class="act-list">
-                        <div class="list-hdr">All Activities</div>
-                        <div class="li" style="--lc:#4285F4" data-a="photobooth" onclick="pick('photobooth')">
-                            <div class="li-dot"></div><span class="li-name">Photobooth Area</span><span
-                                class="li-fl">F2</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#EA4335" data-a="alpha-safari" onclick="pick('alpha-safari')">
-                            <div class="li-dot"></div><span class="li-name">Alpha Safari</span><span
-                                class="li-fl">F2</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#34A853" data-a="build-wall" onclick="pick('build-wall')">
-                            <div class="li-dot"></div><span class="li-name">"I Will Build" Wall</span><span
-                                class="li-fl">F2</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#EA4335" data-a="gde-talk" onclick="pick('gde-talk')">
-                            <div class="li-dot"></div><span class="li-name">GDE Expert Talk</span><span
-                                class="li-fl">F2</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#FBBC04" data-a="qr-hunt" onclick="pick('qr-hunt')">
-                            <div class="li-dot"></div><span class="li-name">QR Code Treasure Hunt</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#EA4335" data-a="tech-frame" onclick="pick('tech-frame')">
-                            <div class="li-dot"></div><span class="li-name">Tech Inspired Frame</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#4285F4" data-a="debug-wall" onclick="pick('debug-wall')">
-                            <div class="li-dot"></div><span class="li-name">Debug The Wall</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#34A853" data-a="gaming" onclick="pick('gaming')">
-                            <div class="li-dot"></div><span class="li-name">Gaming Simulator</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#FBBC04" data-a="gdg-arcade" onclick="pick('gdg-arcade')">
-                            <div class="li-dot"></div><span class="li-name">GDG Arcade</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#4285F4" data-a="multiplayer" onclick="pick('multiplayer')">
-                            <div class="li-dot"></div><span class="li-name">Multiplayer Game</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#EA4335" data-a="problem-solving" onclick="pick('problem-solving')">
-                            <div class="li-dot"></div><span class="li-name">Problem Solving</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#EA4335" data-a="job-fair" onclick="pick('job-fair')">
-                            <div class="li-dot"></div><span class="li-name">Job Fair</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#34A853" data-a="robotics" onclick="pick('robotics')">
-                            <div class="li-dot"></div><span class="li-name">Robotics</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
-                        </div>
-                        <div class="li" style="--lc:#34A853" data-a="art" onclick="pick('art')">
-                            <div class="li-dot"></div><span class="li-name">Art Installations</span><span
-                                class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                        <div class="info-detail" id="infoDetail">
+                            <span class="info-floor" id="infoFloor"></span>
+                            <span class="info-ico" id="infoIco"></span>
+                            <div class="info-name" id="infoName"></div>
+                            <div class="info-desc" id="infoDesc"></div>
+                            <div class="info-loc">&#128205; <span id="infoLoc"></span></div>
+                            <span class="info-tag" id="infoTag"></span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="toast" id="toast"><span class="toast-dot" id="tDot"></span><span id="tTxt"></span></div>
-        <script>
-            const DATA = {
-                photobooth: { name: 'Photobooth Area', ico: '📸', floor: 2, loc: 'Floor 2 · Right Side Room', color: '#FBBC04', desc: 'Google-themed photo zone with Gemini prompt & Search bar frames. Strike a pose!', tag: '📱 Social Media' },
-                'build-wall': { name: '"I Will Build ___" Wall', ico: '🧱', floor: 2, loc: 'Roof Garden · Left Side', color: '#34A853', desc: 'Complete the sentence on a giant sticky-note board. Be part of the wall of dreams.', tag: '✍️ Interactive' },
-                'gde-talk': { name: 'GDE Expert Talk', ico: '🎙️', floor: 2, loc: 'Meeting Room · Floor 2', color: '#EA4335', desc: 'Live virtual session with a Google Developer Expert recognized worldwide.', tag: '🌍 Live Virtual Talk' },
-                'qr-hunt': { name: 'QR Code Treasure Hunt', ico: '🔍', floor: 1, loc: 'GDG Hub · Lobby Area', color: '#FBBC04', desc: 'QR codes are hidden all over the venue. Collect them all to win raffle prizes!', tag: '🎁 Raffle Prizes' },
-                'tech-frame': { name: 'Tech Inspired Frame', ico: '🖼️', floor: 1, loc: 'GDG Hub · Lobby Entry', color: '#EA4335', desc: 'Step inside a giant frame styled like a Gemini prompt or Google Search bar.', tag: '📷 Photo Op' },
-                'debug-wall': { name: 'Debug The Wall', ico: '🐛', floor: 1, loc: 'GDG Hub · Center Wall', color: '#4285F4', desc: 'A 1.5×1.5m printout of code hides exactly one bug. Can you find it?', tag: '💻 Dev Challenge' },
-                gaming: { name: 'Gaming Simulator', ico: '🎮', floor: 1, loc: 'Center · Big Screen Area', color: '#34A853', desc: 'Dedicated TV gaming zone. Pick up a controller and compete in friendly rounds.', tag: '🕹️ Entertainment' },
-                'gdg-arcade': { name: 'GDG Arcade', ico: '👾', floor: 1, loc: 'Center · Tabletop Area', color: '#FBBC04', desc: 'Original mini-games built by the GDG OC LIMU team. Exclusively for TechZaar.', tag: '🎲 GDG-Built' },
-                multiplayer: { name: 'Multiplayer Game', ico: '👥', floor: 1, loc: 'GDG Hub · Lobby Connector', color: '#4285F4', desc: 'Join from your phone and compete live on the big screen with everyone.', tag: '📲 Phone-Join' },
-                'problem-solving': { name: 'Problem Solving Competition', ico: '🧠', floor: 1, loc: 'Robotics Zone · Left Wing', color: '#EA4335', desc: 'Test your logic and coding skills live against the Benghazi tech community.', tag: '⚡ Competition' },
-                'alpha-safari': { name: 'Alpha Safari', ico: '🦁', floor: 2, loc: 'White Corridor · Lower Left', color: '#EA4335', desc: 'An immersive cultural tech safari experience. Explore the intersection of African heritage and modern technology.', tag: '🌍 Cultural Tech' },
-                'job-fair': { name: 'Job Fair', ico: '💼', floor: 1, loc: 'Green Room · Right Side', color: '#EA4335', desc: 'Connect with top tech companies and recruiters. Bring your CV and explore opportunities.', tag: '🏢 Careers' },
-                robotics: { name: 'Robotics', ico: '🤖', floor: 1, loc: 'Robotics Zone · Red Room', color: '#34A853', desc: 'Explore robotics demos, autonomous systems and hands-on builds by the LIMU tech club.', tag: '⚙️ Tech Demo' },
-                art: { name: 'Art Installations', ico: '🎨', floor: 1, loc: 'Art Zone · Lower Left Room', color: '#34A853', desc: 'Glowing sculptures, multi-screen exhibits, and digital canvases. Immersive tech-art fusion.', tag: '🎨 Immersive' },
-            };
-            function switchFloor(n) {
-                document.getElementById('fl1').classList.toggle('on', n === 1);
-                document.getElementById('fl2').classList.toggle('on', n === 2);
-                document.querySelectorAll('.ftab').forEach((t, i) => t.classList.toggle('active', i === n - 1));
-            }
-            function pick(id) {
-                const a = DATA[id]; if (!a) return;
-                switchFloor(a.floor);
-                document.querySelectorAll('.pin').forEach(p => p.classList.remove('lit'));
-                document.querySelectorAll('.li').forEach(l => l.classList.remove('on'));
-                const pin = document.getElementById('pin-' + id);
-                if (pin) pin.classList.add('lit');
-                const li = document.querySelector('.li[data-a="' + id + '"]');
-                if (li) { li.classList.add('on'); li.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-                document.getElementById('infoEmpty').style.display = 'none';
-                document.getElementById('infoDetail').classList.add('on');
-                document.getElementById('infoBar').style.background = a.color;
-                const fb = document.getElementById('infoFloor');
-                fb.textContent = 'Floor ' + a.floor; fb.style.background = a.color + '22'; fb.style.color = a.color;
-                document.getElementById('infoIco').textContent = a.ico;
-                document.getElementById('infoName').textContent = a.name;
-                document.getElementById('infoDesc').textContent = a.desc;
-                document.getElementById('infoLoc').textContent = a.loc;
-                const tag = document.getElementById('infoTag');
-                tag.textContent = a.tag; tag.style.background = a.color + '18'; tag.style.color = a.color;
-                const toast = document.getElementById('toast');
-                document.getElementById('tDot').style.background = a.color;
-                document.getElementById('tTxt').textContent = a.ico + ' ' + a.name + ' · Floor ' + a.floor;
-                toast.classList.add('on');
-                clearTimeout(window._tt);
-                window._tt = setTimeout(() => toast.classList.remove('on'), 3200);
-            }
-            window.addEventListener('DOMContentLoaded', () => {
-                const act = new URLSearchParams(location.search).get('activity');
-                if (act && DATA[act]) setTimeout(() => pick(act), 250);
-            });
-            /* ── Theme (shared key with index.html) ── */
-            const T = document.getElementById('themeToggle'), R = document.documentElement;
-            const sv = localStorage.getItem('tz-theme') || 'light';
-            R.setAttribute('data-theme', sv);
-            T.textContent = sv === 'dark' ? '☀️' : '🌙';
-            T.addEventListener('click', () => {
-                const n = R.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                R.setAttribute('data-theme', n);
-                localStorage.setItem('tz-theme', n);
-                T.textContent = n === 'dark' ? '☀️' : '🌙';
-            });
 
-            /* ── Hamburger ── */
-            document.getElementById('hbg').addEventListener('click', () =>
-                document.getElementById('navLinks').classList.toggle('open')
-            );
-            document.querySelectorAll('.nav-links a').forEach(l =>
-                l.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
-            );
+                <div class="act-list">
+                    <div class="list-hdr">All Activities</div>
+                    <div class="li" style="--lc:#4285F4" data-a="photobooth" onclick="pick('photobooth')">
+                        <div class="li-dot"></div><span class="li-name">Photobooth Area</span><span
+                            class="li-fl">F2</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#EA4335" data-a="alpha-safari" onclick="pick('alpha-safari')">
+                        <div class="li-dot"></div><span class="li-name">Alpha Safari</span><span
+                            class="li-fl">F2</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#34A853" data-a="build-wall" onclick="pick('build-wall')">
+                        <div class="li-dot"></div><span class="li-name">"I Will Build" Wall</span><span
+                            class="li-fl">F2</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#EA4335" data-a="gde-talk" onclick="pick('gde-talk')">
+                        <div class="li-dot"></div><span class="li-name">GDE Expert Talk</span><span
+                            class="li-fl">F2</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#FBBC04" data-a="qr-hunt" onclick="pick('qr-hunt')">
+                        <div class="li-dot"></div><span class="li-name">QR Code Treasure Hunt</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#EA4335" data-a="tech-frame" onclick="pick('tech-frame')">
+                        <div class="li-dot"></div><span class="li-name">Tech Inspired Frame</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#4285F4" data-a="debug-wall" onclick="pick('debug-wall')">
+                        <div class="li-dot"></div><span class="li-name">Debug The Wall</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#34A853" data-a="gaming" onclick="pick('gaming')">
+                        <div class="li-dot"></div><span class="li-name">Gaming Simulator</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#FBBC04" data-a="gdg-arcade" onclick="pick('gdg-arcade')">
+                        <div class="li-dot"></div><span class="li-name">GDG Arcade</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#4285F4" data-a="multiplayer" onclick="pick('multiplayer')">
+                        <div class="li-dot"></div><span class="li-name">Multiplayer Game</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#EA4335" data-a="problem-solving" onclick="pick('problem-solving')">
+                        <div class="li-dot"></div><span class="li-name">Problem Solving</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#EA4335" data-a="job-fair" onclick="pick('job-fair')">
+                        <div class="li-dot"></div><span class="li-name">Job Fair</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#34A853" data-a="robotics" onclick="pick('robotics')">
+                        <div class="li-dot"></div><span class="li-name">Robotics</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                    <div class="li" style="--lc:#34A853" data-a="art" onclick="pick('art')">
+                        <div class="li-dot"></div><span class="li-name">Art Installations</span><span
+                            class="li-fl">F1</span><span class="li-arr">&#8250;</span>
+                    </div>
+                </div>
+            </div><!-- /.sidebar -->
 
-            /* ── Active nav link ── */
-            const currentPage = window.location.pathname.split('/').pop() || 'map.html';
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                if (link.getAttribute('href') === currentPage) link.classList.add('active');
-            });
+        </div><!-- /.map-layout -->
 
-            /* Subtle mouse parallax on blobs */
-            let mx = 0, my = 0;
-            document.addEventListener('mousemove', e => {
-                mx = (e.clientX / window.innerWidth - 0.5) * 2;
-                my = (e.clientY / window.innerHeight - 0.5) * 2;
+    </div><!-- /.page -->
+
+    <div class="toast" id="toast"><span class="toast-dot" id="tDot"></span><span id="tTxt"></span></div>
+
+    <script>
+        const DATA = {
+            photobooth: { name: 'Photobooth Area', ico: '📸', floor: 2, loc: 'Floor 2 · Right Side Room', color: '#FBBC04', desc: 'Google-themed photo zone with Gemini prompt & Search bar frames. Strike a pose!', tag: '📱 Social Media' },
+            'build-wall': { name: '"I Will Build ___" Wall', ico: '🧱', floor: 2, loc: 'Roof Garden · Left Side', color: '#34A853', desc: 'Complete the sentence on a giant sticky-note board. Be part of the wall of dreams.', tag: '✍️ Interactive' },
+            'gde-talk': { name: 'GDE Expert Talk', ico: '🎙️', floor: 2, loc: 'Meeting Room · Floor 2', color: '#EA4335', desc: 'Live virtual session with a Google Developer Expert recognized worldwide.', tag: '🌍 Live Virtual Talk' },
+            'qr-hunt': { name: 'QR Code Treasure Hunt', ico: '🔍', floor: 1, loc: 'GDG Hub · Lobby Area', color: '#FBBC04', desc: 'QR codes are hidden all over the venue. Collect them all to win raffle prizes!', tag: '🎁 Raffle Prizes' },
+            'tech-frame': { name: 'Tech Inspired Frame', ico: '🖼️', floor: 1, loc: 'GDG Hub · Lobby Entry', color: '#EA4335', desc: 'Step inside a giant frame styled like a Gemini prompt or Google Search bar.', tag: '📷 Photo Op' },
+            'debug-wall': { name: 'Debug The Wall', ico: '🐛', floor: 1, loc: 'GDG Hub · Center Wall', color: '#4285F4', desc: 'A 1.5×1.5m printout of code hides exactly one bug. Can you find it?', tag: '💻 Dev Challenge' },
+            gaming: { name: 'Gaming Simulator', ico: '🎮', floor: 1, loc: 'Center · Big Screen Area', color: '#34A853', desc: 'Dedicated TV gaming zone. Pick up a controller and compete in friendly rounds.', tag: '🕹️ Entertainment' },
+            'gdg-arcade': { name: 'GDG Arcade', ico: '👾', floor: 1, loc: 'Center · Tabletop Area', color: '#FBBC04', desc: 'Original mini-games built by the GDG OC LIMU team. Exclusively for TechZaar.', tag: '🎲 GDG-Built' },
+            multiplayer: { name: 'Multiplayer Game', ico: '👥', floor: 1, loc: 'GDG Hub · Lobby Connector', color: '#4285F4', desc: 'Join from your phone and compete live on the big screen with everyone.', tag: '📲 Phone-Join' },
+            'problem-solving': { name: 'Problem Solving Competition', ico: '🧠', floor: 1, loc: 'Robotics Zone · Left Wing', color: '#EA4335', desc: 'Test your logic and coding skills live against the Benghazi tech community.', tag: '⚡ Competition' },
+            'alpha-safari': { name: 'Alpha Safari', ico: '🦁', floor: 2, loc: 'White Corridor · Lower Left', color: '#EA4335', desc: 'An immersive cultural tech safari experience. Explore the intersection of African heritage and modern technology.', tag: '🌍 Cultural Tech' },
+            'job-fair': { name: 'Job Fair', ico: '💼', floor: 1, loc: 'Green Room · Right Side', color: '#EA4335', desc: 'Connect with top tech companies and recruiters. Bring your CV and explore opportunities.', tag: '🏢 Careers' },
+            robotics: { name: 'Robotics', ico: '🤖', floor: 1, loc: 'Robotics Zone · Red Room', color: '#34A853', desc: 'Explore robotics demos, autonomous systems and hands-on builds by the LIMU tech club.', tag: '⚙️ Tech Demo' },
+            art: { name: 'Art Installations', ico: '🎨', floor: 1, loc: 'Art Zone · Lower Left Room', color: '#34A853', desc: 'Glowing sculptures, multi-screen exhibits, and digital canvases. Immersive tech-art fusion.', tag: '🎨 Immersive' },
+        };
+
+        function switchFloor(n) {
+            document.getElementById('fl1').classList.toggle('on', n === 1);
+            document.getElementById('fl2').classList.toggle('on', n === 2);
+            document.querySelectorAll('.ftab').forEach((t, i) => t.classList.toggle('active', i === n - 1));
+        }
+
+        function pick(id) {
+            const a = DATA[id]; if (!a) return;
+            switchFloor(a.floor);
+            document.querySelectorAll('.pin').forEach(p => p.classList.remove('lit'));
+            document.querySelectorAll('.li').forEach(l => l.classList.remove('on'));
+            const pin = document.getElementById('pin-' + id);
+            if (pin) pin.classList.add('lit');
+            const li = document.querySelector('.li[data-a="' + id + '"]');
+            if (li) { li.classList.add('on'); li.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            document.getElementById('infoEmpty').style.display = 'none';
+            document.getElementById('infoDetail').classList.add('on');
+            document.getElementById('infoBar').style.background = a.color;
+            const fb = document.getElementById('infoFloor');
+            fb.textContent = 'Floor ' + a.floor; fb.style.background = a.color + '22'; fb.style.color = a.color;
+            document.getElementById('infoIco').textContent = a.ico;
+            document.getElementById('infoName').textContent = a.name;
+            document.getElementById('infoDesc').textContent = a.desc;
+            document.getElementById('infoLoc').textContent = a.loc;
+            const tag = document.getElementById('infoTag');
+            tag.textContent = a.tag; tag.style.background = a.color + '18'; tag.style.color = a.color;
+            const toast = document.getElementById('toast');
+            document.getElementById('tDot').style.background = a.color;
+            document.getElementById('tTxt').textContent = a.ico + ' ' + a.name + ' · Floor ' + a.floor;
+            toast.classList.add('on');
+            clearTimeout(window._tt);
+            window._tt = setTimeout(() => toast.classList.remove('on'), 3200);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const act = new URLSearchParams(location.search).get('activity');
+            if (act && DATA[act]) setTimeout(() => pick(act), 250);
+        });
+
+        /* Theme */
+        const T = document.getElementById('themeToggle'), R = document.documentElement;
+        const sv = localStorage.getItem('tz-theme') || 'light';
+        R.setAttribute('data-theme', sv);
+        T.textContent = sv === 'dark' ? '☀️' : '🌙';
+        T.addEventListener('click', () => {
+            const n = R.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            R.setAttribute('data-theme', n);
+            localStorage.setItem('tz-theme', n);
+            T.textContent = n === 'dark' ? '☀️' : '🌙';
+        });
+
+        /* Hamburger */
+        document.getElementById('hbg').addEventListener('click', () =>
+            document.getElementById('navLinks').classList.toggle('open')
+        );
+        document.querySelectorAll('.nav-links a').forEach(l =>
+            l.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+        );
+
+        /* Blob parallax */
+        let mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+            mx = (e.clientX / window.innerWidth - 0.5) * 2;
+            my = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
+        const blobs = document.querySelectorAll('.blob');
+        (function tick() {
+            blobs.forEach((b, i) => {
+                const depth = (i % 4 + 1) * 6;
+                b.style.setProperty('--px', `${mx * depth}px`);
+                b.style.setProperty('--py', `${my * depth}px`);
             });
-            const blobs = document.querySelectorAll('.blob');
-            (function tick() {
-                blobs.forEach((b, i) => {
-                    const depth = (i % 4 + 1) * 6;
-                    // Only add parallax offset on top of the CSS animation
-                    b.style.setProperty('--px', `${mx * depth}px`);
-                    b.style.setProperty('--py', `${my * depth}px`);
-                });
-                requestAnimationFrame(tick);
-            })();
-        </script>
+            requestAnimationFrame(tick);
+        })();
+    </script>
 </body>
 
 </html>

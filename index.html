@@ -67,12 +67,10 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             transition: background .35s, color .35s;
-            /* The blob canvas sits behind everything */
             position: relative;
         }
 
         /* ═══════════════════════════ FULL-PAGE BLOB LAYER ═══════════════════════════ */
-        /* Fixed so blobs stay put as user scrolls — covers entire page */
         #blob-canvas {
             position: fixed;
             inset: 0;
@@ -81,7 +79,6 @@
             overflow: hidden;
         }
 
-        /* Gradient mesh — subtle colour washes across the whole viewport */
         #blob-canvas::before {
             content: '';
             position: absolute;
@@ -103,7 +100,6 @@
                 radial-gradient(ellipse 45% 40% at 50% 50%, rgba(66, 133, 244, .06) 0%, transparent 70%);
         }
 
-        /* Individual floating blobs */
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -171,7 +167,6 @@
 
         .brand-logo {
             height: 38px;
-            /* Increased size to make it more visible */
             width: auto;
             object-fit: contain;
             display: block;
@@ -414,7 +409,6 @@
             background: #3367D6;
         }
 
-        /* scroll indicator */
         .scroll-hint {
             display: flex;
             align-items: center;
@@ -560,27 +554,12 @@
         }
 
         /* ═══════════════════════════ ACTIVITY GRID ═══════════════════════════ */
-        /*
-      Layout plan (3 columns):
-      Row 1: Photobooth (wide=2) | "I Will Build" Wall
-      Row 2: QR Hunt | Tech Frame | Debug The Wall
-      Row 3: Gaming Simulator | GDG Arcade | Multiplayer Game
-      Row 4: GDE Expert Talk (wide=2) | Art Installations
-      Row 5: VR Experience | [gap — VR spans tall or Problem Solving fills]
-      Actually: 12 cards, 3-col grid:
-        Photobooth (w2) + Build Wall
-        QR Hunt + Tech Frame + Debug Wall
-        Gaming + GDG Arcade + Multiplayer  ← key ask
-        GDE Talk (w2) + Art
-        Problem Solving + VR
-    */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 13px;
         }
 
-        /* Card base */
         .card {
             background: var(--surf);
             backdrop-filter: blur(12px);
@@ -661,7 +640,6 @@
             margin-top: auto;
         }
 
-        /* Wide card spans 2 cols — kept for future use */
         .card.w2 {
             grid-column: span 2;
         }
@@ -679,7 +657,6 @@
             gap: 10px;
         }
 
-        /* GDE card — always full width across all columns */
         .card.gde {
             grid-column: 1 / -1;
         }
@@ -697,7 +674,6 @@
             gap: 10px;
         }
 
-        /* Photobooth — wide (span 2) on desktop 3-col only */
         .card.photo-wide {
             grid-column: span 2;
         }
@@ -777,7 +753,6 @@
                 gap: 10px;
             }
 
-            /* On 2-col: photo-wide spans full width so it stays rectangular */
             .card.photo-wide {
                 grid-column: span 2;
             }
@@ -955,7 +930,6 @@
             margin: 0 auto;
         }
 
-        /* Brand row */
         .footer-brand {
             display: flex;
             align-items: flex-start;
@@ -993,7 +967,6 @@
             margin-bottom: 14px;
         }
 
-        /* Social cards grid */
         .footer-socials {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1089,7 +1062,6 @@
             cursor: pointer;
         }
 
-        /* Bottom bar */
         .footer-bottom {
             display: flex;
             align-items: center;
@@ -1146,7 +1118,6 @@
 
     <!-- ══════ FULL-PAGE BLOB LAYER ══════ -->
     <div id="blob-canvas">
-        <!-- Blue blobs -->
         <div class="blob" style="width:320px;height:320px;background:#4285F4;top:4%;left:72%;animation-duration:10s;">
         </div>
         <div class="blob"
@@ -1155,7 +1126,6 @@
         <div class="blob"
             style="width:100px;height:100px;background:#4285F4;top:82%;left:58%;animation-duration:17s;animation-delay:-4s;">
         </div>
-        <!-- Red blobs -->
         <div class="blob"
             style="width:220px;height:220px;background:#EA4335;top:72%;left:2%;animation-duration:12s;animation-delay:-3s;">
         </div>
@@ -1165,7 +1135,6 @@
         <div class="blob"
             style="width:80px;height:80px;background:#EA4335;top:45%;left:85%;animation-duration:18s;animation-delay:-10s;">
         </div>
-        <!-- Yellow blobs -->
         <div class="blob"
             style="width:180px;height:180px;background:#FBBC04;top:30%;left:88%;animation-duration:11s;animation-delay:-5s;">
         </div>
@@ -1175,7 +1144,6 @@
         <div class="blob"
             style="width:70px;height:70px;background:#FBBC04;top:10%;left:50%;animation-duration:19s;animation-delay:-11s;">
         </div>
-        <!-- Green blobs -->
         <div class="blob"
             style="width:250px;height:250px;background:#34A853;top:60%;left:68%;animation-duration:9s;animation-delay:-7s;">
         </div>
@@ -1273,27 +1241,7 @@
 
         <div class="grid">
 
-            <!--
-      DESKTOP 3-col layout:
-      [Photobooth wide=2]        [Build Wall]
-      [QR Hunt] [Tech Frame] [Debug Wall]
-      [Gaming]  [GDG Arcade] [Multiplayer]
-      [Problem Solving] [Art Installations]
-      [GDE Expert Talk wide=2]   [empty→ no! GDE is last wide alone]
-
-      To avoid ANY empty slot on 2-col mobile, NO wide cards at all.
-      GDE Expert Talk gets its own full-width class handled differently.
-
-      MOBILE 2-col — all pairs:
-      [Photobooth] [Build Wall]
-      [QR Hunt] [Tech Frame]
-      [Debug Wall] [Gaming]
-      [GDG Arcade] [Multiplayer]
-      [VR] [Problem Solving]
-      [Art Installations] [GDE Expert Talk]  ← GDE no longer wide
-    -->
-
-            <!-- 1. Photobooth — wide on desktop, square on mobile -->
+            <!-- 1. Photobooth — wide on desktop -->
             <div class="card photo-wide" style="--ca:var(--blue);">
                 <div class="card-bar"></div>
                 <div class="card-body">
@@ -1422,7 +1370,7 @@
                 </div>
             </div>
 
-            <!-- 11. GDE Expert Talk — full width on ALL breakpoints -->
+            <!-- 11. GDE Expert Talk — full width -->
             <div class="card gde" style="--ca:var(--red);">
                 <div class="card-bar"></div>
                 <div class="card-body">
@@ -1529,7 +1477,6 @@
                 </a>
             </div>
 
-            <!-- Embedded Google Map -->
             <div class="loc-map">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13376.5!2d20.08!3d32.09!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13a89cb4fefa2c23%3A0x96d89c4f8e8c7f71!2z2YHYttin2KogMzYw!5e0!3m2!1sar!2sly!4v1700000000000!5m2!1sar!2sly"
@@ -1537,15 +1484,12 @@
                     referrerpolicy="no-referrer-when-downgrade" title="Tanmia 360 Space location">
                 </iframe>
             </div>
-
         </div>
     </section>
 
     <!-- ══════ FOOTER ══════ -->
     <footer>
         <div class="footer-inner">
-
-            <!-- Brand -->
             <div class="footer-brand">
                 <div>
                     <div class="footer-name">GDG OC LIMU</div>
@@ -1554,14 +1498,11 @@
                 </div>
             </div>
 
-            <!-- Divider -->
             <div class="footer-divider"></div>
 
-            <!-- Social links -->
             <div class="footer-social-title">Follow us</div>
             <div class="footer-socials">
 
-                <!-- GDG Facebook -->
                 <a href="https://www.facebook.com/gdsclimu" target="_blank" rel="noopener noreferrer" class="soc-card"
                     style="--sc:#4285F4;">
                     <div class="soc-icon">
@@ -1576,7 +1517,6 @@
                     <div class="soc-arrow">→</div>
                 </a>
 
-                <!-- GDG Instagram -->
                 <a href="https://www.instagram.com/gdgoc.limu/" target="_blank" rel="noopener noreferrer"
                     class="soc-card" style="--sc:#EA4335;">
                     <div class="soc-icon">
@@ -1594,7 +1534,6 @@
                     <div class="soc-arrow">→</div>
                 </a>
 
-                <!-- Tanmia360 Instagram -->
                 <a href="https://www.instagram.com/tanmia360/" target="_blank" rel="noopener noreferrer"
                     class="soc-card" style="--sc:#34A853;">
                     <div class="soc-icon">
@@ -1612,7 +1551,6 @@
                     <div class="soc-arrow">→</div>
                 </a>
 
-                <!-- GDG Page -->
                 <a href="https://gdg.community.dev/gdg-on-campus-libyan-international-medical-university-benghazi-libya/"
                     target="_blank" class="soc-card" style="--sc:#FBBC04;">
                     <div class="soc-icon">
@@ -1633,7 +1571,6 @@
 
             </div>
 
-            <!-- Bottom bar -->
             <div class="footer-bottom">
                 <div class="fdots">
                     <div class="fd" style="background:var(--blue);"></div>
@@ -1643,7 +1580,6 @@
                 </div>
                 <p>March 12 · Tanmia 360 Space · 10 PM – 1 AM</p>
             </div>
-
         </div>
     </footer>
 
@@ -1698,7 +1634,7 @@
         }, { threshold: 0.5 });
         document.querySelectorAll('.st').forEach(s => cobs.observe(s));
 
-        /* Subtle mouse parallax on blobs */
+        /* Blob parallax */
         let mx = 0, my = 0;
         document.addEventListener('mousemove', e => {
             mx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -1708,8 +1644,6 @@
         (function tick() {
             blobs.forEach((b, i) => {
                 const depth = (i % 4 + 1) * 6;
-                const curr = b.style.transform || '';
-                // Only add parallax offset on top of the CSS animation
                 b.style.setProperty('--px', `${mx * depth}px`);
                 b.style.setProperty('--py', `${my * depth}px`);
             });
